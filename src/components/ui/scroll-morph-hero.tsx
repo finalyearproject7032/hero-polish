@@ -40,7 +40,7 @@ function FlipCard({ src, target }: { src: string; target: CardTarget }) {
       }}
       transition={{ type: "spring", stiffness: 80, damping: 18, mass: 0.6 }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-xl shadow-card ring-1 ring-primary/10 bg-white">
+      <div className="relative h-full w-full overflow-hidden rounded-xl bg-white ring-2 ring-[hsl(180_95%_55%)]/70 shadow-[0_0_14px_rgba(34,211,238,0.55),0_0_28px_rgba(34,211,238,0.25)]">
         <img src={src} alt="" className="h-full w-full object-cover" draggable={false} />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-white/10" />
       </div>
