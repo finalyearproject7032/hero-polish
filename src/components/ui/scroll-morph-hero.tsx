@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import serviceAi from "@/assets/service-ai.jpg";
 import serviceBusiness from "@/assets/service-business.jpg";
@@ -108,6 +109,7 @@ export default function ScrollMorphHero({
   const [introPhase, setIntroPhase] = useState<AnimationPhase>("scatter");
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -128,10 +130,25 @@ export default function ScrollMorphHero({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    // On mobile, allow native page scroll. Drive morph from the section's
+    // visible scroll progress instead of hijacking touch/wheel events.
+    if (isMobile) {
+      const onScroll = () => {
+        const rect = container.getBoundingClientRect();
+        const vh = window.innerHeight || 1;
+        // 0 when section top hits viewport top, ramps as user scrolls past
+        const progress = Math.min(Math.max(-rect.top / vh, 0), 1);
+        const next = progress * MAX_SCROLL;
+        scrollRef.current = next;
+        virtualScroll.set(next);
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => window.removeEventListener("scroll", onScroll);
+    }
 
     const handleWheel = (e: WheelEvent) => {
       const next = scrollRef.current + e.deltaY;
-      // Only hijack while morph is in progress; pass through otherwise to allow page scroll
       if ((e.deltaY > 0 && scrollRef.current < MAX_SCROLL) || (e.deltaY < 0 && scrollRef.current > 0)) {
         const clamped = Math.min(Math.max(next, 0), MAX_SCROLL);
         if (clamped > 0 && clamped < MAX_SCROLL) {
@@ -142,28 +159,11 @@ export default function ScrollMorphHero({
       }
     };
 
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-    const handleTouchMove = (e: TouchEvent) => {
-      const touchY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchY;
-      touchStartY = touchY;
-      const clamped = Math.min(Math.max(scrollRef.current + deltaY, 0), MAX_SCROLL);
-      scrollRef.current = clamped;
-      virtualScroll.set(clamped);
-    };
-
     container.addEventListener("wheel", handleWheel, { passive: false });
-    container.addEventListener("touchstart", handleTouchStart, { passive: true });
-    container.addEventListener("touchmove", handleTouchMove, { passive: true });
     return () => {
       container.removeEventListener("wheel", handleWheel);
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [virtualScroll]);
+  }, [virtualScroll, isMobile]);
 
   const morphProgress = useTransform(virtualScroll, [0, 600], [0, 1]);
   const smoothMorph = useSpring(morphProgress, { stiffness: 40, damping: 20 });
@@ -175,7 +175,7 @@ export default function ScrollMorphHero({
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || isMobile) return;
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const relativeX = e.clientX - rect.left;
@@ -184,7 +184,7 @@ export default function ScrollMorphHero({
     };
     container.addEventListener("mousemove", handleMouseMove);
     return () => container.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX]);
+  }, [mouseX, isMobile]);
 
   useEffect(() => {
     const t1 = setTimeout(() => setIntroPhase("line"), 500);
@@ -229,7 +229,7 @@ export default function ScrollMorphHero({
     <section
       id="home"
       ref={containerRef}
-      className="relative h-screen min-h-[680px] w-full overflow-hidden bg-hero touch-none select-none"
+      className={`relative h-screen min-h-[560px] sm:min-h-[680px] w-full overflow-hidden bg-hero select-none ${isMobile ? "" : "touch-none"}`}
     >
       {/* Floating ambient orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">

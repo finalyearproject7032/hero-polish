@@ -34,8 +34,8 @@ export function Nav() {
           paddingBottom: scrolled ? 10 : 14,
         }}
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
-        className={`relative flex items-center justify-between rounded-full px-5 transition-colors ${
-          scrolled ? "glass-nav shadow-soft" : "bg-transparent"
+        className={`relative flex items-center justify-between rounded-full px-5 transition-colors glass-nav shadow-soft ${
+          scrolled ? "" : "lg:bg-transparent lg:shadow-none lg:backdrop-blur-0"
         }`}
       >
         <a href="#home" className="flex items-center gap-2 font-extrabold tracking-tight text-[1.05rem]">
