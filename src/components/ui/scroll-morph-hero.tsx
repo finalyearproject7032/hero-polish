@@ -344,11 +344,12 @@ export default function ScrollMorphHero({
               scale: isMobile ? 1.3 : 1.7,
             };
 
+            const circleScale = isMobile ? 0.7 : 1;
             target = {
               x: lerp(circlePos.x, arcPos.x, morphValue),
               y: lerp(circlePos.y, arcPos.y, morphValue),
               rotation: lerp(circlePos.rotation, arcPos.rotation, morphValue),
-              scale: lerp(1, arcPos.scale, morphValue),
+              scale: lerp(circleScale, arcPos.scale, morphValue),
               opacity: 1,
             };
           }
