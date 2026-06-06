@@ -229,7 +229,7 @@ export default function ScrollMorphHero({
     <section
       id="home"
       ref={containerRef}
-      className="relative h-screen min-h-[680px] w-full overflow-hidden bg-hero touch-none select-none"
+      className={`relative h-screen min-h-[560px] sm:min-h-[680px] w-full overflow-hidden bg-hero select-none ${isMobile ? "" : "touch-none"}`}
     >
       {/* Floating ambient orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
