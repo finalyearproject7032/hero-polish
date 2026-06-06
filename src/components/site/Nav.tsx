@@ -35,7 +35,7 @@ export function Nav() {
         }}
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
         className={`relative flex items-center justify-between rounded-full px-5 transition-colors ${
-          scrolled ? "glass-nav shadow-soft" : "bg-transparent"
+          scrolled ? "glass-nav shadow-soft" : "glass-nav/80 lg:bg-transparent lg:shadow-none shadow-soft"
         }`}
       >
         <a href="#home" className="flex items-center gap-2 font-extrabold tracking-tight text-[1.05rem]">
