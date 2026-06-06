@@ -1,29 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Nav } from "@/components/site/Nav";
+import ScrollMorphHero from "@/components/ui/scroll-morph-hero";
+import { EcosystemDock } from "@/components/site/EcosystemDock";
+import { Services } from "@/components/site/Services";
+import { Clients } from "@/components/site/Clients";
+import { CaseStudies } from "@/components/site/CaseStudies";
+import { Testimonials } from "@/components/site/Testimonials";
+import { WhyAndMetrics } from "@/components/site/WhyAndMetrics";
+import { FinalCTA } from "@/components/site/FinalCTA";
+import { Contact } from "@/components/site/Contact";
+import { Packages } from "@/components/site/Packages";
+import { Consultation } from "@/components/site/Consultation";
+import { Footer } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "BRANDFRA — We Make You Visible." },
+      { name: "description", content: "The Complete Branding & Growth Partner. Founder branding, PR, SEO, content, and performance marketing engineered for measurable revenue." },
+      { property: "og:title", content: "BRANDFRA — We Make You Visible." },
+      { property: "og:description", content: "The Complete Branding & Growth Partner for Businesses and Individuals." },
     ],
   }),
-  component: Index,
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Home() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen bg-background text-foreground">
+      <Nav />
+      <ScrollMorphHero />
+      <EcosystemDock />
+      <Services />
+      <Clients />
+      <CaseStudies />
+      <Testimonials />
+      <WhyAndMetrics />
+      <Packages />
+      <FinalCTA />
+      <Contact />
+      <Consultation />
+      <Footer />
+    </main>
   );
 }
