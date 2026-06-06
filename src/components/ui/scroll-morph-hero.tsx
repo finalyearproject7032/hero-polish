@@ -237,46 +237,34 @@ export default function ScrollMorphHero({
         <div className="absolute top-32 right-[-120px] size-[480px] rounded-full bg-brand-gradient opacity-15 blur-3xl animate-float-slow" style={{ animationDelay: "2.5s" }} />
       </div>
 
-      {/* Intro headline — sits ABOVE the circular ring */}
+      {/* Centered brand content — fits INSIDE the circular ring */}
       <motion.div
         style={{ opacity: introOpacity, y: introY }}
-        className="pointer-events-none absolute inset-x-0 top-[6%] sm:top-[7%] lg:top-[8%] z-20 flex flex-col items-center text-center px-6"
-      >
-        <div className="inline-flex items-center gap-2 rounded-full glass-nav px-4 py-1.5 text-xs font-medium text-primary mb-4">
-          <Sparkles size={14} />
-          {eyebrow}
-        </div>
-        <h2 className="font-display font-extrabold tracking-[-0.03em] text-[clamp(1.75rem,4.2vw,3.25rem)] leading-[1] text-foreground">
-          {introTitle}
-        </h2>
-      </motion.div>
-
-      {/* Centered brand content — sits INSIDE the circle */}
-      <motion.div
-        style={{ opacity: introOpacity }}
         className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-6"
       >
-        <div className="flex w-full max-w-[20rem] sm:max-w-[26rem] lg:max-w-[32rem] flex-col items-center text-center">
-          <span className="inline-flex items-center rounded-full glass-nav px-3 py-1 text-[10px] font-semibold tracking-[0.35em] text-primary uppercase">
-            BrandFra
-          </span>
-          <h1 className="mt-4 font-display font-extrabold tracking-[-0.035em] text-[clamp(1.4rem,3vw,2.5rem)] leading-[1.05] text-foreground">
-            Building Brands That <span className="text-gradient">Can't Be Ignored</span>
+        <div className="flex w-full max-w-[18rem] sm:max-w-[22rem] lg:max-w-[26rem] flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 rounded-full glass-nav px-3.5 py-1.5 text-[10px] sm:text-xs font-medium text-primary">
+            <Sparkles size={12} />
+            {eyebrow}
+          </div>
+          <h1 className="mt-3 font-display font-extrabold tracking-[-0.035em] text-[clamp(1.5rem,3.6vw,2.75rem)] leading-[1] text-foreground">
+            {introTitle}
           </h1>
-          <p className="mt-4 text-xs sm:text-sm lg:text-base font-medium text-foreground/80">
+          <p className="mt-3 text-xs sm:text-sm font-semibold text-foreground/85">
             Your Digital Growth Partner in Visakhapatnam
           </p>
-          <p className="mt-1.5 text-[11px] sm:text-xs lg:text-sm text-muted-foreground">
+          <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground">
             Branding, Marketing &amp; Automation for Modern Businesses
           </p>
-          <p className="mt-3 text-[10px] sm:text-[11px] font-semibold tracking-[0.3em] text-primary/80 uppercase">
+          <p className="mt-3 text-[10px] font-semibold tracking-[0.3em] text-primary/80 uppercase">
             From Visibility to Authority
           </p>
-          <p className="mt-6 text-[10px] font-semibold tracking-[0.3em] text-muted-foreground">
+          <p className="mt-5 text-[10px] font-semibold tracking-[0.3em] text-muted-foreground">
             ↓ {introHint}
           </p>
         </div>
       </motion.div>
+
 
       {/* Arc-active content */}
       <motion.div
