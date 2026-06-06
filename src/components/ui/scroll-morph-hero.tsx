@@ -256,7 +256,7 @@ export default function ScrollMorphHero({
         style={{ opacity: introOpacity }}
         className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-6"
       >
-        <div className="flex w-full max-w-[34rem] flex-col items-center text-center">
+        <div className="flex w-full max-w-[20rem] sm:max-w-[26rem] lg:max-w-[32rem] flex-col items-center text-center">
           <span className="inline-flex items-center rounded-full glass-nav px-3 py-1 text-[10px] font-semibold tracking-[0.35em] text-primary uppercase">
             BrandFra
           </span>
