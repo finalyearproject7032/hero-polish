@@ -175,7 +175,7 @@ export default function ScrollMorphHero({
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || isMobile) return;
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const relativeX = e.clientX - rect.left;
@@ -184,7 +184,7 @@ export default function ScrollMorphHero({
     };
     container.addEventListener("mousemove", handleMouseMove);
     return () => container.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX]);
+  }, [mouseX, isMobile]);
 
   useEffect(() => {
     const t1 = setTimeout(() => setIntroPhase("line"), 500);
