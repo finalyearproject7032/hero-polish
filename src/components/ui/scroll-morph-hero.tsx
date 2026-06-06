@@ -310,7 +310,9 @@ export default function ScrollMorphHero({
             const isMobile = containerSize.width < 768;
             const minDim = Math.min(containerSize.width, containerSize.height);
 
-            const circleRadius = Math.min(minDim * 0.4, 400);
+            const circleRadius = isMobile
+              ? Math.max(Math.min(containerSize.width * 0.38, 180), 130)
+              : Math.min(minDim * 0.4, 400);
             const circleAngle = (i / TOTAL_IMAGES) * 360;
             const circleRad = (circleAngle * Math.PI) / 180;
             const circlePos = {
