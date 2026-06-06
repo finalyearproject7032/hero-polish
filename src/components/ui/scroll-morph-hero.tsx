@@ -310,7 +310,9 @@ export default function ScrollMorphHero({
             const isMobile = containerSize.width < 768;
             const minDim = Math.min(containerSize.width, containerSize.height);
 
-            const circleRadius = Math.min(minDim * 0.4, 400);
+            const circleRadius = isMobile
+              ? Math.max(Math.min(containerSize.width * 0.38, 180), 130)
+              : Math.min(minDim * 0.4, 400);
             const circleAngle = (i / TOTAL_IMAGES) * 360;
             const circleRad = (circleAngle * Math.PI) / 180;
             const circlePos = {
@@ -342,11 +344,12 @@ export default function ScrollMorphHero({
               scale: isMobile ? 1.3 : 1.7,
             };
 
+            const circleScale = isMobile ? 0.7 : 1;
             target = {
               x: lerp(circlePos.x, arcPos.x, morphValue),
               y: lerp(circlePos.y, arcPos.y, morphValue),
               rotation: lerp(circlePos.rotation, arcPos.rotation, morphValue),
-              scale: lerp(1, arcPos.scale, morphValue),
+              scale: lerp(circleScale, arcPos.scale, morphValue),
               opacity: 1,
             };
           }
