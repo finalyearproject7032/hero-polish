@@ -1,140 +1,200 @@
-import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { ArrowRight, Download, X } from "lucide-react";
+import whatsmarketing from "@/assets/case-studies/cs_whatsmarketing.asset.json";
+import hanz from "@/assets/case-studies/cs_hanz.asset.json";
+import dayschedule from "@/assets/case-studies/cs_dayschedule.asset.json";
+import hashtechinfo from "@/assets/case-studies/cs_hashtechinfo.asset.json";
 
-const cases = [
+type Study = {
+  client: string;
+  industry: string;
+  description: string;
+  results: { icon: string; label: string }[];
+  pdf: string;
+  accent: string;
+};
+
+const studies: Study[] = [
   {
-    brand: "TechSHA",
-    title: "Scaled founder authority into a $4M pipeline",
-    challenge: "Unknown founder in a noisy AI category with zero inbound.",
-    strategy: "Founder-led thought leadership + LinkedIn engine + PR placements.",
-    execution: "Editorial calendar, 12 PR features, sales-aligned content engine.",
-    metrics: [
-      { v: 412, suffix: "%", label: "Inbound Growth" },
-      { v: 87, suffix: "", label: "Qualified Leads / mo" },
-      { v: 4, suffix: "M+", label: "Pipeline Generated" },
+    client: "WhatsMarketing",
+    industry: "B2B SaaS Marketing",
+    description:
+      "Generated a predictable pipeline of product demo bookings through targeted campaigns and conversion-focused funnel optimization.",
+    results: [
+      { icon: "🎯", label: "1,979 Product Demos" },
+      { icon: "💰", label: "₹147 Cost Per Lead" },
+      { icon: "📈", label: "₹2.9L Budget Managed" },
     ],
-    result: "Became the most-quoted founder in their category within 6 months.",
+    pdf: whatsmarketing.url,
+    accent: "from-blue-500/30 to-purple-500/30",
   },
   {
-    brand: "SYLORA AI",
-    title: "0 to category leader in 9 months",
-    challenge: "Stealth AI startup needing rapid market positioning.",
-    strategy: "Narrative architecture + SEO topical authority + paid acceleration.",
-    execution: "Full website rebuild, 180 cornerstone articles, performance funnels.",
-    metrics: [
-      { v: 320, suffix: "K", label: "Monthly Organic" },
-      { v: 6, suffix: "x", label: "CAC Efficiency" },
-      { v: 1, suffix: ".8M", label: "ARR Added" },
+    client: "HANZ",
+    industry: "IT Services & App Development",
+    description:
+      "Built a reliable lead generation system for a US-based technology company to create consistent business opportunities.",
+    results: [
+      { icon: "🇺🇸", label: "6 Qualified US Appointments" },
+      { icon: "📈", label: "20% Conversion Rate" },
+      { icon: "💰", label: "₹12,000 Campaign Budget" },
     ],
-    result: "Acquired 1,800 paying customers and Series A momentum.",
+    pdf: hanz.url,
+    accent: "from-cyan-500/30 to-blue-500/30",
   },
   {
-    brand: "ATS Verify",
-    title: "Built a verified-trust brand at enterprise scale",
-    challenge: "Crowded HR-tech market with low trust signals.",
-    strategy: "Trust ecosystem: PR + case studies + executive branding.",
-    execution: "C-suite content, 28 enterprise case studies, retargeting engine.",
-    metrics: [
-      { v: 9, suffix: "x", label: "Demo Conversions" },
-      { v: 240, suffix: "%", label: "Enterprise Pipeline" },
-      { v: 32, suffix: "", label: "Tier-1 Press Features" },
+    client: "DaySchedule",
+    industry: "Appointment Scheduling Software",
+    description:
+      "Improved messaging, optimized the landing page, and implemented a structured lead generation funnel for a SaaS platform.",
+    results: [
+      { icon: "🎯", label: "11 Product Demos" },
+      { icon: "💰", label: "₹393 Cost Per Lead" },
+      { icon: "👥", label: "6 Paying Customers" },
     ],
-    result: "Closed three Fortune 500 contracts within two quarters.",
+    pdf: dayschedule.url,
+    accent: "from-purple-500/30 to-pink-500/30",
+  },
+  {
+    client: "HashTechInfo",
+    industry: "Career Services & Job Placement",
+    description:
+      "Created a scalable appointment-generation system that delivered qualified prospects directly into the sales pipeline.",
+    results: [
+      { icon: "📞", label: "26 Qualified Appointments" },
+      { icon: "💰", label: "₹350 Per Appointment" },
+      { icon: "🚀", label: "2–3 Converted Clients" },
+    ],
+    pdf: hashtechinfo.url,
+    accent: "from-emerald-500/30 to-cyan-500/30",
   },
 ];
 
-function Counter({ to, suffix }: { to: number; suffix: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          const start = performance.now();
-          const dur = 1400;
-          const tick = (t: number) => {
-            const p = Math.min(1, (t - start) / dur);
-            const eased = 1 - Math.pow(1 - p, 3);
-            setVal(Math.round(to * eased));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [to]);
-  return (
-    <span ref={ref} className="font-display font-extrabold text-3xl lg:text-4xl text-gradient">
-      {val}
-      {suffix}
-    </span>
-  );
-}
-
 export function CaseStudies() {
+  const [active, setActive] = useState<Study | null>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActive(null);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [active]);
+
   return (
     <section id="work" className="py-24 lg:py-32 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">Case Studies</p>
           <h2 className="mt-4 font-display font-extrabold tracking-tight text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.05]">
-            Real Work. Real Numbers.
+            Proven Results
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Selected engagements where visibility translated into measurable revenue.
+            Real campaigns. Real businesses. Real growth.
           </p>
         </div>
 
-        <div className="mt-14 space-y-6">
-          {cases.map((c, i) => (
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {studies.map((s, i) => (
             <motion.article
-              key={c.brand}
+              key={s.client}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, delay: i * 0.08 }}
-              className="group relative overflow-hidden rounded-3xl border border-border bg-white shadow-card p-8 lg:p-12 transition hover:shadow-glow"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: i * 0.08 }}
+              whileHover={{ y: -6 }}
+              className="group relative overflow-hidden rounded-3xl border border-border bg-white p-8 shadow-card transition-all duration-300 hover:shadow-glow"
             >
-              <div className="absolute -right-32 -top-32 size-96 rounded-full bg-brand-gradient opacity-0 group-hover:opacity-10 blur-3xl transition duration-700" />
-              <div className="grid lg:grid-cols-[1fr_auto] gap-10 items-start">
-                <div>
-                  <p className="text-xs font-semibold tracking-[0.18em] text-primary uppercase">{c.brand}</p>
-                  <h3 className="mt-3 font-display font-bold text-2xl lg:text-3xl tracking-tight leading-tight">
-                    {c.title}
-                  </h3>
-                  <dl className="mt-6 grid sm:grid-cols-2 gap-x-10 gap-y-4 text-sm">
-                    {[
-                      ["Challenge", c.challenge],
-                      ["Strategy", c.strategy],
-                      ["Execution", c.execution],
-                      ["Result", c.result],
-                    ].map(([k, v]) => (
-                      <div key={k}>
-                        <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{k}</dt>
-                        <dd className="mt-1 text-foreground/85 leading-relaxed">{v}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-                <div className="flex lg:flex-col gap-6 lg:gap-4 lg:min-w-[200px] lg:pl-8 lg:border-l border-border">
-                  {c.metrics.map((m) => (
-                    <div key={m.label}>
-                      <Counter to={m.v} suffix={m.suffix} />
-                      <div className="text-xs text-muted-foreground mt-1">{m.label}</div>
-                    </div>
+              <div className={`pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-gradient-to-br ${s.accent} opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700`} />
+              <div className="relative">
+                <p className="text-[10px] font-semibold tracking-[0.2em] text-primary uppercase">
+                  {s.industry}
+                </p>
+                <h3 className="mt-2 font-display font-extrabold text-2xl lg:text-3xl tracking-tight">
+                  {s.client}
+                </h3>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  {s.description}
+                </p>
+
+                <ul className="mt-6 space-y-2">
+                  {s.results.map((r) => (
+                    <li
+                      key={r.label}
+                      className="flex items-center gap-3 rounded-xl bg-secondary/60 px-3.5 py-2.5 text-sm font-semibold text-foreground"
+                    >
+                      <span className="text-base">{r.icon}</span>
+                      {r.label}
+                    </li>
                   ))}
-                </div>
+                </ul>
+
+                <button
+                  onClick={() => setActive(s)}
+                  className="mt-7 inline-flex items-center gap-2 rounded-full bg-brand-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition hover:translate-y-[-1px]"
+                >
+                  View Case Study
+                  <ArrowRight size={16} />
+                </button>
               </div>
             </motion.article>
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
+            onClick={() => setActive(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              className="relative flex h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-border px-5 py-3">
+                <div>
+                  <p className="text-[10px] font-semibold tracking-[0.2em] text-primary uppercase">
+                    {active.industry}
+                  </p>
+                  <h4 className="font-display font-bold text-lg">{active.client}</h4>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={active.pdf}
+                    download
+                    className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3.5 py-1.5 text-xs font-semibold text-foreground hover:bg-secondary/70 transition"
+                  >
+                    <Download size={14} /> Download
+                  </a>
+                  <button
+                    onClick={() => setActive(null)}
+                    aria-label="Close"
+                    className="inline-flex size-9 items-center justify-center rounded-full bg-secondary hover:bg-secondary/70 transition"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+              <iframe
+                src={`${active.pdf}#view=FitH`}
+                title={`${active.client} case study`}
+                className="h-full w-full flex-1 bg-neutral-100"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
