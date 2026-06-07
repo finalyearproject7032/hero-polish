@@ -27,7 +27,7 @@ const studies: Study[] = [
       { icon: "📈", label: "₹2.9L Budget Managed" },
     ],
     pdf: whatsmarketing.url,
-    accent: "from-blue-500/30 to-purple-500/30",
+    accent: "from-indigo-600 via-blue-600 to-violet-600",
   },
   {
     client: "HANZ",
@@ -40,7 +40,7 @@ const studies: Study[] = [
       { icon: "💰", label: "₹12,000 Campaign Budget" },
     ],
     pdf: hanz.url,
-    accent: "from-cyan-500/30 to-blue-500/30",
+    accent: "from-cyan-500 via-sky-600 to-blue-700",
   },
   {
     client: "DaySchedule",
@@ -53,7 +53,7 @@ const studies: Study[] = [
       { icon: "👥", label: "6 Paying Customers" },
     ],
     pdf: dayschedule.url,
-    accent: "from-purple-500/30 to-pink-500/30",
+    accent: "from-fuchsia-600 via-purple-600 to-pink-600",
   },
   {
     client: "HashTechInfo",
@@ -66,7 +66,7 @@ const studies: Study[] = [
       { icon: "🚀", label: "2–3 Converted Clients" },
     ],
     pdf: hashtechinfo.url,
-    accent: "from-emerald-500/30 to-cyan-500/30",
+    accent: "from-emerald-500 via-teal-600 to-cyan-700",
   },
 ];
 
@@ -97,7 +97,7 @@ export function CaseStudies() {
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-7">
           {studies.map((s, i) => (
             <motion.article
               key={s.client}
@@ -105,40 +105,52 @@ export function CaseStudies() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.08 }}
-              whileHover={{ y: -6 }}
-              className="group relative overflow-hidden rounded-3xl border border-border bg-white p-8 shadow-card transition-all duration-300 hover:shadow-glow"
+              whileHover={{ y: -8 }}
+              className="group relative overflow-hidden rounded-3xl p-[1.5px] shadow-card transition-all duration-500 hover:shadow-[0_24px_60px_-12px_rgba(15,23,42,0.35)]"
             >
-              <div className={`pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-gradient-to-br ${s.accent} opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700`} />
-              <div className="relative">
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-primary uppercase">
-                  {s.industry}
-                </p>
-                <h3 className="mt-2 font-display font-extrabold text-2xl lg:text-3xl tracking-tight">
-                  {s.client}
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                  {s.description}
-                </p>
+              {/* Animated gradient border */}
+              <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${s.accent} opacity-70 group-hover:opacity-100 transition-opacity duration-500`} />
+              {/* Inner card */}
+              <div className="relative h-full rounded-[calc(1.5rem-1.5px)] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8 overflow-hidden">
+                {/* Glow orb */}
+                <div className={`pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-gradient-to-br ${s.accent} opacity-40 group-hover:opacity-70 blur-3xl transition-all duration-700`} />
+                {/* Subtle grid pattern */}
+                <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:24px_24px]" />
 
-                <ul className="mt-6 space-y-2">
-                  {s.results.map((r) => (
-                    <li
-                      key={r.label}
-                      className="flex items-center gap-3 rounded-xl bg-secondary/60 px-3.5 py-2.5 text-sm font-semibold text-foreground"
-                    >
-                      <span className="text-base">{r.icon}</span>
-                      {r.label}
-                    </li>
-                  ))}
-                </ul>
+                <div className="relative">
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-block size-1.5 rounded-full bg-gradient-to-r ${s.accent}`} />
+                    <p className="text-[10px] font-semibold tracking-[0.22em] text-white/70 uppercase">
+                      {s.industry}
+                    </p>
+                  </div>
+                  <h3 className="mt-3 font-display font-extrabold text-3xl lg:text-4xl tracking-tight text-white">
+                    {s.client}
+                  </h3>
+                  <p className="mt-4 text-sm leading-relaxed text-white/70">
+                    {s.description}
+                  </p>
 
-                <button
-                  onClick={() => setActive(s)}
-                  className="mt-7 inline-flex items-center gap-2 rounded-full bg-brand-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition hover:translate-y-[-1px]"
-                >
-                  View Case Study
-                  <ArrowRight size={16} />
-                </button>
+                  <ul className="mt-6 grid grid-cols-1 gap-2">
+                    {s.results.map((r) => (
+                      <li
+                        key={r.label}
+                        className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2.5 text-sm font-semibold text-white/95 transition-colors group-hover:border-white/20 group-hover:bg-white/[0.09]"
+                      >
+                        <span className="text-base">{r.icon}</span>
+                        {r.label}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => setActive(s)}
+                    className={`mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${s.accent} px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)] transition-all hover:translate-y-[-1px] hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.6)]`}
+                  >
+                    View Case Study
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
               </div>
             </motion.article>
           ))}
