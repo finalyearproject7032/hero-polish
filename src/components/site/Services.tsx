@@ -49,7 +49,7 @@ export function Services() {
                   src={s.img}
                   alt={s.name}
                   loading="lazy"
-                  className="h-full w-full object-center transition-transform duration-700 group-hover:scale-105 object-cover"
+                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="p-5">
