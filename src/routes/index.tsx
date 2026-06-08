@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
-import { HeroGallery } from "@/components/site/HeroGallery";
+import { ShuffleHero } from "@/components/ui/shuffle-grid";
 import { EcosystemDock } from "@/components/site/EcosystemDock";
 import { Services } from "@/components/site/Services";
 import { Clients } from "@/components/site/Clients";
@@ -29,7 +29,7 @@ function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Nav />
-      <HeroGallery />
+      <div className="pt-28"><ShuffleHero /></div>
       <EcosystemDock />
       <Services />
       <Clients />
